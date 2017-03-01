@@ -37,7 +37,7 @@ public class AskMe_App extends Application {
     public static synchronized  AskMe_App getInstance(){
         return appInstance;
     }
-    public NetComponent getMainAppComponent() {
+    public NetComponent getNetAppComponent() {
         return netComponent;
     }
 }
