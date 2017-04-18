@@ -1,0 +1,64 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".Chat">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="453dp"
+        android:id="@+id/linearLayout"
+        android:layout_above="@+id/meditText"
+        android:layout_alignParentTop="true">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/results_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="236dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:layout_above="@+id/editText"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="0.98"/>
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/meditText"
+        android:layout_gravity="left|center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/button2"
+        android:layout_toStartOf="@+id/button2"/>
+
+    <Button
+        android:layout_width="49dp"
+        android:layout_height="wrap_content"
+        android:text="A"
+        android:onClick="onClickA"
+        android:id="@+id/button"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+    style="?android:attr/buttonStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="B"
+    android:id="@+id/button2"
+    android:onClick="onClickB"
+    android:layout_alignParentBottom="true"
+    android:layout_toLeftOf="@+id/button"
+    android:layout_toStartOf="@+id/button"/>
+
+</RelativeLayout>

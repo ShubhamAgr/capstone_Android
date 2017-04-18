@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 
 import java.net.URISyntaxException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -20,6 +21,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * Created by shubham on 1/3/17.
@@ -27,8 +29,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetModule {
         String baseUrl;
-        public NetModule(String baseUrl) {
+        String baseUrl2;
+
+        public NetModule(String baseUrl,String baseUrl2) {
             this.baseUrl = baseUrl;
+            this.baseUrl2 = baseUrl2;
         }
         //okhttp cache
         @Provides
@@ -42,7 +47,6 @@ public class NetModule {
         @Provides @Singleton
         Gson providesGson() {
             GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
             return gsonBuilder.create();
         }
 
@@ -54,16 +58,25 @@ public class NetModule {
             return  client;
         }
 
-        @Provides @Singleton
-        Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
+        @Provides @Named("vipin") @Singleton
+        Retrofit provideRetrofit(Gson gson,OkHttpClient okHttpClient) {
 
             Retrofit retrofit = new Retrofit.Builder().addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory
-                    (GsonConverterFactory
-                            .create(gson)).baseUrl
+                    (GsonConverterFactory.create(gson)).baseUrl
                     (baseUrl)
                     .client(okHttpClient).build();
             return retrofit;
         }
+
+
+      @Provides @Named("shubham") @Singleton
+        Retrofit provideRetrofit2(OkHttpClient okHttpClient) {
+          GsonBuilder gsonBuilder = new GsonBuilder();
+          Gson gson1 =  gsonBuilder.create();
+          Retrofit retrofit = new Retrofit.Builder().addCallAdapterFactory(RxJavaCallAdapterFactory.create()).addConverterFactory
+                (GsonConverterFactory.create(gson1)).baseUrl(baseUrl2).client(okHttpClient).build();
+        return retrofit;
+    }
 
         @Provides @Singleton
         Socket provideSocket(){
@@ -104,25 +117,6 @@ public class NetModule {
                     @Override
                     public void call(Object... args) {
 
-                    }
-                });
-                socket.on("onNewNotification", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        Log.i("New Notification","True");
-                    }
-                });
-                socket.on("onJoinRequest", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        Log.i("room joined:","True");
-                    }
-                });
-
-                socket.on("onLeaveRequest", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        Log.i("room left","true");
                     }
                 });
                 socket.connect();
