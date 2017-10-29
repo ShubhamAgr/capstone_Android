@@ -45,15 +45,48 @@ public class MainActivity extends AppCompatActivity {
     @Inject @Named("shubham")
     Retrofit retrofit2;
 
+    //These are the only permissions defined as dangerous in the manifest
+    //Internet and access current state aren't dangerous
+    final String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.RECORD_AUDIO};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            //Permission requesting only applies to Android M (API 23) and above
+            checkPermissions();
+        }
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(MainActivity.this,FirstActivity.class);
         startActivity(intent);
     }
+
+    public void checkPermissions(){
+        if(!granted(perms)) {
+            Log.i("Permissions", "Missing permissions. Requesting...");
+            ActivityCompat.requestPermissions(this, perms, 101);
+        }else{
+            Log.i("Permissions", "All permissions granted!");
+        }
+    }
+
+    private boolean granted(String[] permissions) {
+        for(String s : permissions) {
+            int result = ContextCompat.checkSelfPermission(this, s);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                // If the permission isn't granted, just return false. The permission requesting system doesn't
+                // request already granted permissions, so this
+                // also works as a shortcut
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
 
